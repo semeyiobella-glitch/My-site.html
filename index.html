@@ -1,124 +1,191 @@
-import React, { useState } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGUGCAI Initiative</title>
 
-export default function Dashboard() { const [page, setPage] = useState("dashboard");
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #020617;
+        color: white;
+    }
 
-const [sermons, setSermons] = useState([]); const [leaders, setLeaders] = useState([ { name: "Pastor Odell Frederick", role: "Founder", status: "approved" }, { name: "Joel Pros", role: "Coordinator", status: "approved" }, { name: "Apostle Ivan Obella Semeyi", role: "General Coordinator & Health Expert", status: "approved" }, { name: "Echaka Gaptus", role: "System Analyst & Information Officer", status: "approved" }, { name: "Brother Oulema Stephen", role: "Event Organiser", status: "pending" } ]);
+    header {
+        background: #020617;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 2px solid #00ffcc;
+    }
 
-const [members, setMembers] = useState([]); const [logo, setLogo] = useState(null);
+    header h1 {
+        color: #00ffcc;
+        margin: 0;
+    }
 
-// 🎥 Upload sermon video const uploadVideo = (e) => { const file = e.target.files[0]; if (!file) return;
+    nav {
+        display: flex;
+        justify-content: center;
+        background: #020617;
+        padding: 10px;
+    }
 
-const url = URL.createObjectURL(file);
-setSermons([...sermons, url]);
+    nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-};
+    nav a:hover {
+        color: #00ffcc;
+    }
 
-// 👑 Leader actions const approveLeader = (i) => { const copy = [...leaders]; copy[i].status = "approved"; setLeaders(copy); };
+    .hero {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(to right, #020617, #0f172a);
+    }
 
-const rejectLeader = (i) => { const copy = [...leaders]; copy.splice(i, 1); setLeaders(copy); };
+    .hero h2 {
+        font-size: 32px;
+    }
 
-// 🙋 Member actions const addMember = () => { setMembers([...members, { name: "New Member", status: "pending" }]); };
+    .btn {
+        padding: 12px 25px;
+        background: #00ffcc;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 5px;
+    }
 
-const approveMember = (i) => { const copy = [...members]; copy[i].status = "approved"; setMembers(copy); };
+    .section {
+        padding: 40px 20px;
+        text-align: center;
+    }
 
-const rejectMember = (i) => { const copy = [...members]; copy.splice(i, 1); setMembers(copy); };
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-return ( <div style={{ display: "flex", height: "100vh", background: "#0f0f0f", color: "white" }}>
+    .card {
+        background: #111827;
+        margin: 15px;
+        padding: 20px;
+        width: 300px;
+        border-radius: 10px;
+    }
 
-{/* SIDEBAR */}
-  <div style={{ width: 250, background: "#111", padding: 20 }}>
+    footer {
+        background: black;
+        text-align: center;
+        padding: 15px;
+        margin-top: 20px;
+    }
 
-    {/* LOGO */}
-    <div style={{ textAlign: "center", marginBottom: 20 }}>
-      {logo ? (
-        <img src={logo} alt="logo" style={{ width: 80, borderRadius: 10 }} />
-      ) : (
-        <p>No Logo</p>
-      )}
+    input {
+        padding: 10px;
+        width: 80%;
+        margin: 10px;
+        border-radius: 5px;
+        border: none;
+    }
+</style>
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => {
-          const file = e.target.files[0];
-          if (file) setLogo(URL.createObjectURL(file));
-        }}
-      />
+</head>
+
+<body>
+
+<header>
+    <h1>AGUGCAI</h1>
+    <p>Anti-Global Ungodly Content Abolishment Initiative</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#mission">Mission</a>
+    <a href="#sermons">Sermons</a>
+    <a href="#bible">Bible</a>
+    <a href="#join">Join</a>
+</nav>
+
+<section class="hero" id="home">
+    <h2>Stand for Truth. Reject Corruption.</h2>
+    <p>Transforming lives through discipline, faith, and purpose.</p>
+    <button class="btn" onclick="scrollToJoin()">Join Us</button>
+</section>
+
+<section class="section" id="mission">
+    <h2>Our Mission</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>Purity</h3>
+            <p>Eliminating ungodly digital content.</p>
+        </div>
+        <div class="card">
+            <h3>Discipline</h3>
+            <p>Building strong and focused individuals.</p>
+        </div>
+        <div class="card">
+            <h3>Faith</h3>
+            <p>Encouraging spiritual growth and truth.</p>
+        </div>
     </div>
+</section>
 
-    <button onClick={() => setPage("dashboard")}>📊 Dashboard</button><br /><br />
-    <button onClick={() => setPage("sermons")}>🎥 Sermons</button><br /><br />
-    <button onClick={() => setPage("leaders")}>👑 Leaders</button><br /><br />
-    <button onClick={() => setPage("members")}>🙋 Members</button>
-  </div>
+<section class="section" id="sermons">
+    <h2>Featured Sermon</h2>
+    <div class="card">
+        <p>"The Power of Discipline in a Corrupt World"</p>
+        <button class="btn" onclick="playSermon()">Play Sermon</button>
+    </div>
+</section>
 
-  {/* MAIN AREA */}
-  <div style={{ flex: 1, padding: 20 }}>
+<section class="section" id="bible">
+    <h2>Read the Bible</h2>
+    <div class="card">
+        <p>Access the full King James Version Bible online.</p>
+        <button class="btn" onclick="openBible()">Open Bible</button>
+    </div>
+</section>
 
-    {/* DASHBOARD */}
-    {page === "dashboard" && (
-      <div>
-        <h1>Dashboard Overview</h1>
-        <p>Sermons: {sermons.length}</p>
-        <p>Leaders: {leaders.length}</p>
-        <p>Members: {members.length}</p>
-      </div>
-    )}
+<section class="section" id="join">
+    <h2>Join AGUGCAI</h2>
+    <div class="card">
+        <input type="text" placeholder="Your Name">
+        <input type="email" placeholder="Your Email">
+        <br>
+        <button class="btn" onclick="join()">Join Now</button>
+    </div>
+</section>
 
-    {/* SERMONS */}
-    {page === "sermons" && (
-      <div>
-        <h2>🎥 Sermons</h2>
-        <input type="file" accept="video/*" onChange={uploadVideo} />
+<footer>
+    <p>Founder: Pastor Odell Frederick</p>
+    <p>© 2026 AGUGCAI</p>
+</footer>
 
-        {sermons.map((v, i) => (
-          <video key={i} src={v} controls width="300" />
-        ))}
-      </div>
-    )}
+<script>
+function openBible() {
+    window.open("https://www.kingjamesbibleonline.org/", "_blank");
+}
 
-    {/* LEADERS */}
-    {page === "leaders" && (
-      <div>
-        <h2>👑 Leaders Management</h2>
+function playSermon() {
+    alert("Sermon feature coming soon!");
+}
 
-        {leaders.map((l, i) => (
-          <div key={i} style={{ marginBottom: 10 }}>
-            {l.name} - {l.role} ({l.status})
+function join() {
+    alert("You have joined AGUGCAI!");
+}
 
-            {l.status !== "approved" && (
-              <>
-                <button onClick={() => approveLeader(i)}>Approve</button>
-                <button onClick={() => rejectLeader(i)}>Reject</button>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-    )}
+function scrollToJoin() {
+    document.getElementById("join").scrollIntoView({behavior: "smooth"});
+}
+</script>
 
-    {/* MEMBERS */}
-    {page === "members" && (
-      <div>
-        <h2>🙋 Members Management</h2>
-        <button onClick={addMember}>Add Member Request</button>
-
-        {members.map((m, i) => (
-          <div key={i} style={{ marginTop: 10 }}>
-            {m.name} ({m.status})
-
-            {m.status !== "approved" && (
-              <>
-                <button onClick={() => approveMember(i)}>Approve</button>
-                <button onClick={() => rejectMember(i)}>Reject</button>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-    )}
-
-  </div>
-</div>
-
-); }
+</body>
+  </html>
