@@ -1,117 +1,183 @@
-import React, { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
 
-export default function Dashboard() { const [sermons, setSermons] = useState([]); const [leaders, setLeaders] = useState([ { name: "Pastor Odell Frederick", role: "Founder", approved: true }, { name: "Joel Pros", role: "Coordinator", approved: true }, { name: "Semeyi Obella", role: "General Coordinator", approved: true } ]);
+export default function Dashboard() {
+  // 🔐 LOGIN
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-const [members, setMembers] = useState([]); const [newLeader, setNewLeader] = useState(""); const [newMember, setNewMember] = useState("");
+  // NAVIGATION
+  const [page, setPage] = useState("dashboard");
 
-// Upload sermon video const handleVideoUpload = (e) => { const file = e.target.files[0]; if (file) { const url = URL.createObjectURL(file); setSermons([...sermons, { url, title: file.name }]); } };
+  // DATA
+  const [sermons, setSermons] = useState([]);
+  const [leaders, setLeaders] = useState([
+    { name: "Pastor Odell Frederick", role: "Founder", status: "approved" },
+    { name: "Joel Pros", role: "Coordinator", status: "approved" },
+    { name: "Apostle Ivan Obella Semeyi", role: "General Coordinator & Health Expert", status: "approved" },
+    { name: "Echaka Gaptus", role: "System Analyst & Information Officer", status: "approved" },
+    { name: "Brother Oulema Stephen", role: "Event Organiser", status: "pending" }
+  ]);
 
-// Add leader (pending approval) const addLeader = () => { if (newLeader.trim()) { setLeaders([...leaders, { name: newLeader, role: "Pending", approved: false }]); setNewLeader(""); } };
+  const [members, setMembers] = useState([]);
 
-const approveLeader = (index) => { const updated = [...leaders]; updated[index].approved = true; updated[index].role = "Leader"; setLeaders(updated); };
+  // 🔐 LOGIN FUNCTION
+  const login = () => {
+    if (username === "admin" && password === "1234") {
+      setLoggedIn(true);
+    } else {
+      alert("Wrong credentials");
+    }
+  };
 
-// Members system const addMember = () => { if (newMember.trim()) { setMembers([...members, { name: newMember, approved: false }]); setNewMember(""); } };
+  // 🎥 SERMON UPLOAD
+  const uploadSermon = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-const approveMember = (index) => { const updated = [...members]; updated[index].approved = true; setMembers(updated); };
+    const url = URL.createObjectURL(file);
+    setSermons([...sermons, { url, title: file.name }]);
+  };
 
-return ( <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white p-6"> {/* HEADER */} <div className="flex justify-between items-center mb-6"> <div> <h1 className="text-4xl font-bold">ARGUGCAI Dashboard</h1> <p className="text-gray-400">Spreading righteousness through technology</p> </div> <Button className="rounded-2xl">Admin Panel</Button> </div>
+  // 👑 LEADERS
+  const approveLeader = (i) => {
+    const copy = [...leaders];
+    copy[i].status = "approved";
+    setLeaders(copy);
+  };
 
-{/* HERO */}
-  <div className="rounded-2xl overflow-hidden shadow-xl mb-8">
-    <img
-      src="https://images.unsplash.com/photo-1490730141103-6cac27aaab94"
-      className="w-full h-64 object-cover"
-    />
-  </div>
+  const rejectLeader = (i) => {
+    const copy = [...leaders];
+    copy.splice(i, 1);
+    setLeaders(copy);
+  };
 
-  {/* GRID */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  // 🙋 MEMBERS
+  const addMember = () => {
+    setMembers([...members, { name: "New Member", status: "pending" }]);
+  };
 
-    {/* SERMONS */}
-    <Card className="bg-gray-900  shadow-lg">
-      <CardContent className="p-4">
-        <h2 className="text-xl font-semibold mb-3">🎥 Sermons</h2>
-        <Input type="file" accept="video/*" onChange={handleVideoUpload} />
+  const approveMember = (i) => {
+    const copy = [...members];
+    copy[i].status = "approved";
+    setMembers(copy);
+  };
 
-        <div className="mt-4 grid gap-3">
-          {sermons.map((s, i) => (
-            <div key={i}>
-              <p className="text-sm text-gray-400">{s.title}</p>
-              <video controls className="rounded-xl w-full mt-1">
-                <source src={s.url} />
-              </video>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+  const rejectMember = (i) => {
+    const copy = [...members];
+    copy.splice(i, 1);
+    setMembers(copy);
+  };
 
-    {/* LEADERS */}
-    <Card className="bg-gray-900 rounded-2xl shadow-lg">
-      <CardContent className="p-4">
-        <h2 className="text-xl font-semibold mb-3">👑 Leaders</h2>
+  // 🔐 LOGIN SCREEN
+  if (!loggedIn) {
+    return (
+      <div style={{ padding: 40, background: "#111", color: "white", height: "100vh" }}>
+        <h1>Secure Admin Login</h1>
 
-        <div className="flex gap-2 mb-3">
-          <Input
-            value={newLeader}
-            onChange={(e) => setNewLeader(e.target.value)}
-            placeholder="Add leader"
-          />
-          <Button onClick={addLeader}>Add</Button>
-        </div>
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <br /><br />
 
-        {leaders.map((l, i) => (
-          <div key={i} className="flex justify-between mb-2">
-            <span>{l.name} - {l.role}</span>
-            {!l.approved && (
-              <Button size="sm" onClick={() => approveLeader(i)}>
-                Approve
-              </Button>
-            )}
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br /><br />
+
+        <button onClick={login}>Login</button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: "flex", height: "100vh", background: "#0f0f0f", color: "white" }}>
+
+      {/* SIDEBAR */}
+      <div style={{ width: 250, background: "#111", padding: 20 }}>
+        <h3>Church Admin</h3>
+
+        <button onClick={() => setPage("dashboard")}>Dashboard</button><br />
+        <button onClick={() => setPage("sermons")}>Sermons</button><br />
+        <button onClick={() => setPage("leaders")}>Leaders</button><br />
+        <button onClick={() => setPage("members")}>Members</button><br />
+      </div>
+
+      {/* MAIN AREA */}
+      <div style={{ flex: 1, padding: 20 }}>
+
+        {/* DASHBOARD */}
+        {page === "dashboard" && (
+          <div>
+            <h2>Dashboard Overview</h2>
+            <p>Sermons: {sermons.length}</p>
+            <p>Leaders: {leaders.length}</p>
+            <p>Members: {members.length}</p>
           </div>
-        ))}
-      </CardContent>
-    </Card>
+        )}
 
-    {/* MEMBERS */}
-    <Card className="bg-gray-900 rounded-2xl shadow-lg">
-      <CardContent className="p-4">
-        <h2 className="text-xl font-semibold mb-3">🙋 Members</h2>
+        {/* SERMONS */}
+        {page === "sermons" && (
+          <div>
+            <h2>🎥 Sermon Upload Area</h2>
+            <input type="file" accept="video/*" onChange={uploadSermon} />
 
-        <div className="flex gap-2 mb-3">
-          <Input
-            value={newMember}
-            onChange={(e) => setNewMember(e.target.value)}
-            placeholder="Add member"
-          />
-          <Button onClick={addMember}>Join</Button>
-        </div>
-
-        {members.map((m, i) => (
-          <div key={i} className="flex justify-between mb-2">
-            <span>{m.name}</span>
-            {!m.approved && (
-              <Button size="sm" onClick={() => approveMember(i)}>
-                Approve
-              </Button>
-            )}
+            {sermons.map((s, i) => (
+              <div key={i}>
+                <p>{s.title}</p>
+                <video src={s.url} controls width="300" />
+              </div>
+            ))}
           </div>
-        ))}
-      </CardContent>
-    </Card>
+        )}
 
-    {/* STATS PANEL */}
-    <Card className="bg-gray-900 rounded-2xl shadow-lg">
-      <CardContent className="p-4">
-        <h2 className="text-xl font-semibold mb-3">📊 Overview</h2>
-        <p>Total Sermons: {sermons.length}</p>
-        <p>Total Leaders: {leaders.length}</p>
-        <p>Total Members: {members.length}</p>
-      </CardContent>
-    </Card>
+        {/* LEADERS */}
+        {page === "leaders" && (
+          <div>
+            <h2>👑 Leaders Management</h2>
 
-  </div>
-</div>
+            {leaders.map((l, i) => (
+              <div key={i}>
+                {l.name} - {l.role} ({l.status})
 
-); }
-  
+                {l.status !== "approved" && (
+                  <>
+                    <button onClick={() => approveLeader(i)}>Approve</button>
+                    <button onClick={() => rejectLeader(i)}>Reject</button>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* MEMBERS */}
+        {page === "members" && (
+          <div>
+            <h2>🙋 Members</h2>
+            <button onClick={addMember}>Add Member</button>
+
+            {members.map((m, i) => (
+              <div key={i}>
+                {m.name} ({m.status})
+
+                {m.status !== "approved" && (
+                  <>
+                    <button onClick={() => approveMember(i)}>Approve</button>
+                    <button onClick={() => rejectMember(i)}>Reject</button>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}
