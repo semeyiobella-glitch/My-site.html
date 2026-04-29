@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AGUGCAI Initiative</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #0b0f1a;
+            color: white;
+        }
+
+        header {
+            background: #111827;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #00ffcc;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #020617;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #00ffcc;
+        }
+
+        section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .hero {
+            background: linear-gradient(to right, #020617, #0f172a);
+        }
+
+        .card {
+            background: #111827;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 400px;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #00ffcc;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #00ccaa;
+        }
+
+        footer {
+            background: #020617;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>AGUGCAI</h1>
+    <p>Anti-Global Ungodly Content Abolishment Initiative</p>
+</header>
+
+<nav>
+    <a href="#about">About</a>
+    <a href="#mission">Mission</a>
+    <a href="#bible">Bible</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<section class="hero">
+    <h2>Welcome to AGUGCAI</h2>
+    <p>Standing for truth, discipline, and moral restoration in the digital world.</p>
+</section>
+
+<section id="about">
+    <h2>About Us</h2>
+    <div class="card">
+        <p>
+            AGUGCAI is a movement dedicated to eliminating ungodly and harmful content
+            while promoting righteous living, discipline, and spiritual growth.
+        </p>
+    </div>
+</section>
+
+<section id="mission">
+    <h2>Our Mission</h2>
+    <div class="card">
+        <p>
+            To guide individuals away from destructive habits and toward a life of
+            purpose, integrity, and faith.
+        </p>
+    </div>
+</section>
+
+<section id="bible">
+    <h2>Read the Bible</h2>
+    <div class="card">
+        <p>Access the full King James Version Bible.</p>
+        <button onclick="openBible()">Open Bible</button>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <div class="card">
+        <p>Founder: Pastor Odell Frederick</p>
+        <p>Email: agugcai@initiative.org</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 AGUGCAI Initiative</p>
+</footer>
+
+<script>
+    function openBible() {
+        window.open("https://www.kingjamesbibleonline.org/", "_blank");
+    }
+</script>
+
+</body>
+</html>
