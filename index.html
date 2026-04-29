@@ -1,183 +1,124 @@
 import React, { useState } from "react";
 
-export default function Dashboard() {
-  // 🔐 LOGIN
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Dashboard() { const [page, setPage] = useState("dashboard");
 
-  // NAVIGATION
-  const [page, setPage] = useState("dashboard");
+const [sermons, setSermons] = useState([]); const [leaders, setLeaders] = useState([ { name: "Pastor Odell Frederick", role: "Founder", status: "approved" }, { name: "Joel Pros", role: "Coordinator", status: "approved" }, { name: "Apostle Ivan Obella Semeyi", role: "General Coordinator & Health Expert", status: "approved" }, { name: "Echaka Gaptus", role: "System Analyst & Information Officer", status: "approved" }, { name: "Brother Oulema Stephen", role: "Event Organiser", status: "pending" } ]);
 
-  // DATA
-  const [sermons, setSermons] = useState([]);
-  const [leaders, setLeaders] = useState([
-    { name: "Pastor Odell Frederick", role: "Founder", status: "approved" },
-    { name: "Joel Pros", role: "Coordinator", status: "approved" },
-    { name: "Apostle Ivan Obella Semeyi", role: "General Coordinator & Health Expert", status: "approved" },
-    { name: "Echaka Gaptus", role: "System Analyst & Information Officer", status: "approved" },
-    { name: "Brother Oulema Stephen", role: "Event Organiser", status: "pending" }
-  ]);
+const [members, setMembers] = useState([]); const [logo, setLogo] = useState(null);
 
-  const [members, setMembers] = useState([]);
+// 🎥 Upload sermon video const uploadVideo = (e) => { const file = e.target.files[0]; if (!file) return;
 
-  // 🔐 LOGIN FUNCTION
-  const login = () => {
-    if (username === "admin" && password === "1234") {
-      setLoggedIn(true);
-    } else {
-      alert("Wrong credentials");
-    }
-  };
+const url = URL.createObjectURL(file);
+setSermons([...sermons, url]);
 
-  // 🎥 SERMON UPLOAD
-  const uploadSermon = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+};
 
-    const url = URL.createObjectURL(file);
-    setSermons([...sermons, { url, title: file.name }]);
-  };
+// 👑 Leader actions const approveLeader = (i) => { const copy = [...leaders]; copy[i].status = "approved"; setLeaders(copy); };
 
-  // 👑 LEADERS
-  const approveLeader = (i) => {
-    const copy = [...leaders];
-    copy[i].status = "approved";
-    setLeaders(copy);
-  };
+const rejectLeader = (i) => { const copy = [...leaders]; copy.splice(i, 1); setLeaders(copy); };
 
-  const rejectLeader = (i) => {
-    const copy = [...leaders];
-    copy.splice(i, 1);
-    setLeaders(copy);
-  };
+// 🙋 Member actions const addMember = () => { setMembers([...members, { name: "New Member", status: "pending" }]); };
 
-  // 🙋 MEMBERS
-  const addMember = () => {
-    setMembers([...members, { name: "New Member", status: "pending" }]);
-  };
+const approveMember = (i) => { const copy = [...members]; copy[i].status = "approved"; setMembers(copy); };
 
-  const approveMember = (i) => {
-    const copy = [...members];
-    copy[i].status = "approved";
-    setMembers(copy);
-  };
+const rejectMember = (i) => { const copy = [...members]; copy.splice(i, 1); setMembers(copy); };
 
-  const rejectMember = (i) => {
-    const copy = [...members];
-    copy.splice(i, 1);
-    setMembers(copy);
-  };
+return ( <div style={{ display: "flex", height: "100vh", background: "#0f0f0f", color: "white" }}>
 
-  // 🔐 LOGIN SCREEN
-  if (!loggedIn) {
-    return (
-      <div style={{ padding: 40, background: "#111", color: "white", height: "100vh" }}>
-        <h1>Secure Admin Login</h1>
+{/* SIDEBAR */}
+  <div style={{ width: 250, background: "#111", padding: 20 }}>
 
-        <input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <br /><br />
+    {/* LOGO */}
+    <div style={{ textAlign: "center", marginBottom: 20 }}>
+      {logo ? (
+        <img src={logo} alt="logo" style={{ width: 80, borderRadius: 10 }} />
+      ) : (
+        <p>No Logo</p>
+      )}
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br /><br />
-
-        <button onClick={login}>Login</button>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ display: "flex", height: "100vh", background: "#0f0f0f", color: "white" }}>
-
-      {/* SIDEBAR */}
-      <div style={{ width: 250, background: "#111", padding: 20 }}>
-        <h3>Church Admin</h3>
-
-        <button onClick={() => setPage("dashboard")}>Dashboard</button><br />
-        <button onClick={() => setPage("sermons")}>Sermons</button><br />
-        <button onClick={() => setPage("leaders")}>Leaders</button><br />
-        <button onClick={() => setPage("members")}>Members</button><br />
-      </div>
-
-      {/* MAIN AREA */}
-      <div style={{ flex: 1, padding: 20 }}>
-
-        {/* DASHBOARD */}
-        {page === "dashboard" && (
-          <div>
-            <h2>Dashboard Overview</h2>
-            <p>Sermons: {sermons.length}</p>
-            <p>Leaders: {leaders.length}</p>
-            <p>Members: {members.length}</p>
-          </div>
-        )}
-
-        {/* SERMONS */}
-        {page === "sermons" && (
-          <div>
-            <h2>🎥 Sermon Upload Area</h2>
-            <input type="file" accept="video/*" onChange={uploadSermon} />
-
-            {sermons.map((s, i) => (
-              <div key={i}>
-                <p>{s.title}</p>
-                <video src={s.url} controls width="300" />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* LEADERS */}
-        {page === "leaders" && (
-          <div>
-            <h2>👑 Leaders Management</h2>
-
-            {leaders.map((l, i) => (
-              <div key={i}>
-                {l.name} - {l.role} ({l.status})
-
-                {l.status !== "approved" && (
-                  <>
-                    <button onClick={() => approveLeader(i)}>Approve</button>
-                    <button onClick={() => rejectLeader(i)}>Reject</button>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* MEMBERS */}
-        {page === "members" && (
-          <div>
-            <h2>🙋 Members</h2>
-            <button onClick={addMember}>Add Member</button>
-
-            {members.map((m, i) => (
-              <div key={i}>
-                {m.name} ({m.status})
-
-                {m.status !== "approved" && (
-                  <>
-                    <button onClick={() => approveMember(i)}>Approve</button>
-                    <button onClick={() => rejectMember(i)}>Reject</button>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-      </div>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          if (file) setLogo(URL.createObjectURL(file));
+        }}
+      />
     </div>
-  );
-}
+
+    <button onClick={() => setPage("dashboard")}>📊 Dashboard</button><br /><br />
+    <button onClick={() => setPage("sermons")}>🎥 Sermons</button><br /><br />
+    <button onClick={() => setPage("leaders")}>👑 Leaders</button><br /><br />
+    <button onClick={() => setPage("members")}>🙋 Members</button>
+  </div>
+
+  {/* MAIN AREA */}
+  <div style={{ flex: 1, padding: 20 }}>
+
+    {/* DASHBOARD */}
+    {page === "dashboard" && (
+      <div>
+        <h1>Dashboard Overview</h1>
+        <p>Sermons: {sermons.length}</p>
+        <p>Leaders: {leaders.length}</p>
+        <p>Members: {members.length}</p>
+      </div>
+    )}
+
+    {/* SERMONS */}
+    {page === "sermons" && (
+      <div>
+        <h2>🎥 Sermons</h2>
+        <input type="file" accept="video/*" onChange={uploadVideo} />
+
+        {sermons.map((v, i) => (
+          <video key={i} src={v} controls width="300" />
+        ))}
+      </div>
+    )}
+
+    {/* LEADERS */}
+    {page === "leaders" && (
+      <div>
+        <h2>👑 Leaders Management</h2>
+
+        {leaders.map((l, i) => (
+          <div key={i} style={{ marginBottom: 10 }}>
+            {l.name} - {l.role} ({l.status})
+
+            {l.status !== "approved" && (
+              <>
+                <button onClick={() => approveLeader(i)}>Approve</button>
+                <button onClick={() => rejectLeader(i)}>Reject</button>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+
+    {/* MEMBERS */}
+    {page === "members" && (
+      <div>
+        <h2>🙋 Members Management</h2>
+        <button onClick={addMember}>Add Member Request</button>
+
+        {members.map((m, i) => (
+          <div key={i} style={{ marginTop: 10 }}>
+            {m.name} ({m.status})
+
+            {m.status !== "approved" && (
+              <>
+                <button onClick={() => approveMember(i)}>Approve</button>
+                <button onClick={() => rejectMember(i)}>Reject</button>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+
+  </div>
+</div>
+
+); }
