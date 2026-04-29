@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGUGCAI Initiative</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #020617;
+        color: white;
+    }
+
+    header {
+        background: #020617;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 2px solid #00ffcc;
+    }
+
+    header h1 {
+        color: #00ffcc;
+        margin: 0;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        background: #020617;
+        padding: 10px;
+    }
+
+    nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    nav a:hover {
+        color: #00ffcc;
+    }
+
+    .hero {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(to right, #020617, #0f172a);
+    }
+
+    .hero h2 {
+        font-size: 32px;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        background: #00ffcc;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .section {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card {
+        background: #111827;
+        margin: 15px;
+        padding: 20px;
+        width: 300px;
+        border-radius: 10px;
+    }
+
+    footer {
+        background: black;
+        text-align: center;
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    input {
+        padding: 10px;
+        width: 80%;
+        margin: 10px;
+        border-radius: 5px;
+        border: none;
+    }
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <h1>AGUGCAI</h1>
+    <p>Anti-Global Ungodly Content Abolishment Initiative</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#mission">Mission</a>
+    <a href="#sermons">Sermons</a>
+    <a href="#bible">Bible</a>
+    <a href="#join">Join</a>
+</nav>
+
+<section class="hero" id="home">
+    <h2>Stand for Truth. Reject Corruption.</h2>
+    <p>Transforming lives through discipline, faith, and purpose.</p>
+    <button class="btn" onclick="scrollToJoin()">Join Us</button>
+</section>
+
+<section class="section" id="mission">
+    <h2>Our Mission</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>Purity</h3>
+            <p>Eliminating ungodly digital content.</p>
+        </div>
+        <div class="card">
+            <h3>Discipline</h3>
+            <p>Building strong and focused individuals.</p>
+        </div>
+        <div class="card">
+            <h3>Faith</h3>
+            <p>Encouraging spiritual growth and truth.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="sermons">
+    <h2>Featured Sermon</h2>
+    <div class="card">
+        <p>"The Power of Discipline in a Corrupt World"</p>
+        <button class="btn" onclick="playSermon()">Play Sermon</button>
+    </div>
+</section>
+
+<section class="section" id="bible">
+    <h2>Read the Bible</h2>
+    <div class="card">
+        <p>Access the full King James Version Bible online.</p>
+        <button class="btn" onclick="openBible()">Open Bible</button>
+    </div>
+</section>
+
+<section class="section" id="join">
+    <h2>Join AGUGCAI</h2>
+    <div class="card">
+        <input type="text" placeholder="Your Name">
+        <input type="email" placeholder="Your Email">
+        <br>
+        <button class="btn" onclick="join()">Join Now</button>
+    </div>
+</section>
+
+<footer>
+    <p>Founder: Pastor Odell Frederick</p>
+    <p>© 2026 AGUGCAI</p>
+</footer>
+
+<script>
+function openBible() {
+    window.open("https://www.kingjamesbibleonline.org/", "_blank");
+}
+
+function playSermon() {
+    alert("Sermon feature coming soon!");
+}
+
+function join() {
+    alert("You have joined AGUGCAI!");
+}
+
+function scrollToJoin() {
+    document.getElementById("join").scrollIntoView({behavior: "smooth"});
+}
+</script>
+
+</body>
+</html>
