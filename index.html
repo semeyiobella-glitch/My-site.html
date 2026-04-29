@@ -1,191 +1,116 @@
-<meta name="google-site-verification" content="ugXXpyyT7ZNqzq7DDnid0K_N-AlyOdK9xipnR77QnuA" /><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGUGCAI Initiative</title>
+import React, { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input";
 
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #020617;
-        color: white;
-    }
+export default function Dashboard() { const [sermons, setSermons] = useState([]); const [leaders, setLeaders] = useState([ { name: "Pastor Odell Frederick", role: "Founder", approved: true }, { name: "Joel Pros", role: "Coordinator", approved: true }, { name: "Semeyi Obella", role: "General Coordinator", approved: true } ]);
 
-    header {
-        background: #020617;
-        padding: 20px;
-        text-align: center;
-        border-bottom: 2px solid #00ffcc;
-    }
+const [members, setMembers] = useState([]); const [newLeader, setNewLeader] = useState(""); const [newMember, setNewMember] = useState("");
 
-    header h1 {
-        color: #00ffcc;
-        margin: 0;
-    }
+// Upload sermon video const handleVideoUpload = (e) => { const file = e.target.files[0]; if (file) { const url = URL.createObjectURL(file); setSermons([...sermons, { url, title: file.name }]); } };
 
-    nav {
-        display: flex;
-        justify-content: center;
-        background: #020617;
-        padding: 10px;
-    }
+// Add leader (pending approval) const addLeader = () => { if (newLeader.trim()) { setLeaders([...leaders, { name: newLeader, role: "Pending", approved: false }]); setNewLeader(""); } };
 
-    nav a {
-        color: white;
-        margin: 0 15px;
-        text-decoration: none;
-        font-weight: bold;
-    }
+const approveLeader = (index) => { const updated = [...leaders]; updated[index].approved = true; updated[index].role = "Leader"; setLeaders(updated); };
 
-    nav a:hover {
-        color: #00ffcc;
-    }
+// Members system const addMember = () => { if (newMember.trim()) { setMembers([...members, { name: newMember, approved: false }]); setNewMember(""); } };
 
-    .hero {
-        text-align: center;
-        padding: 60px 20px;
-        background: linear-gradient(to right, #020617, #0f172a);
-    }
+const approveMember = (index) => { const updated = [...members]; updated[index].approved = true; setMembers(updated); };
 
-    .hero h2 {
-        font-size: 32px;
-    }
+return ( <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white p-6"> {/* HEADER */} <div className="flex justify-between items-center mb-6"> <div> <h1 className="text-4xl font-bold">ARGUGCAI Dashboard</h1> <p className="text-gray-400">Spreading righteousness through technology</p> </div> <Button className="rounded-2xl">Admin Panel</Button> </div>
 
-    .btn {
-        padding: 12px 25px;
-        background: #00ffcc;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        border-radius: 5px;
-    }
+{/* HERO */}
+  <div className="rounded-2xl overflow-hidden shadow-xl mb-8">
+    <img
+      src="https://images.unsplash.com/photo-1490730141103-6cac27aaab94"
+      className="w-full h-64 object-cover"
+    />
+  </div>
 
-    .section {
-        padding: 40px 20px;
-        text-align: center;
-    }
+  {/* GRID */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    .cards {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+    {/* SERMONS */}
+    <Card className="bg-gray-900 rounded-2xl shadow-lg">
+      <CardContent className="p-4">
+        <h2 className="text-xl font-semibold mb-3">🎥 Sermons</h2>
+        <Input type="file" accept="video/*" onChange={handleVideoUpload} />
 
-    .card {
-        background: #111827;
-        margin: 15px;
-        padding: 20px;
-        width: 300px;
-        border-radius: 10px;
-    }
-
-    footer {
-        background: black;
-        text-align: center;
-        padding: 15px;
-        margin-top: 20px;
-    }
-
-    input {
-        padding: 10px;
-        width: 80%;
-        margin: 10px;
-        border-radius: 5px;
-        border: none;
-    }
-</style>
-
-</head>
-
-<body>
-
-<header>
-    <h1>AGUGCAI</h1>
-    <p>Anti-Global Ungodly Content Abolishment Initiative</p>
-</header>
-
-<nav>
-    <a href="#home">Home</a>
-    <a href="#mission">Mission</a>
-    <a href="#sermons">Sermons</a>
-    <a href="#bible">Bible</a>
-    <a href="#join">Join</a>
-</nav>
-
-<section class="hero" id="home">
-    <h2>Stand for Truth. Reject Corruption.</h2>
-    <p>Transforming lives through discipline, faith, and purpose.</p>
-    <button class="btn" onclick="scrollToJoin()">Join Us</button>
-</section>
-
-<section class="section" id="mission">
-    <h2>Our Mission</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>Purity</h3>
-            <p>Eliminating ungodly digital content.</p>
+        <div className="mt-4 grid gap-3">
+          {sermons.map((s, i) => (
+            <div key={i}>
+              <p className="text-sm text-gray-400">{s.title}</p>
+              <video controls className="rounded-xl w-full mt-1">
+                <source src={s.url} />
+              </video>
+            </div>
+          ))}
         </div>
-        <div class="card">
-            <h3>Discipline</h3>
-            <p>Building strong and focused individuals.</p>
+      </CardContent>
+    </Card>
+
+    {/* LEADERS */}
+    <Card className="bg-gray-900 rounded-2xl shadow-lg">
+      <CardContent className="p-4">
+        <h2 className="text-xl font-semibold mb-3">👑 Leaders</h2>
+
+        <div className="flex gap-2 mb-3">
+          <Input
+            value={newLeader}
+            onChange={(e) => setNewLeader(e.target.value)}
+            placeholder="Add leader"
+          />
+          <Button onClick={addLeader}>Add</Button>
         </div>
-        <div class="card">
-            <h3>Faith</h3>
-            <p>Encouraging spiritual growth and truth.</p>
+
+        {leaders.map((l, i) => (
+          <div key={i} className="flex justify-between mb-2">
+            <span>{l.name} - {l.role}</span>
+            {!l.approved && (
+              <Button size="sm" onClick={() => approveLeader(i)}>
+                Approve
+              </Button>
+            )}
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+
+    {/* MEMBERS */}
+    <Card className="bg-gray-900 rounded-2xl shadow-lg">
+      <CardContent className="p-4">
+        <h2 className="text-xl font-semibold mb-3">🙋 Members</h2>
+
+        <div className="flex gap-2 mb-3">
+          <Input
+            value={newMember}
+            onChange={(e) => setNewMember(e.target.value)}
+            placeholder="Add member"
+          />
+          <Button onClick={addMember}>Join</Button>
         </div>
-    </div>
-</section>
 
-<section class="section" id="sermons">
-    <h2>Featured Sermon</h2>
-    <div class="card">
-        <p>"The Power of Discipline in a Corrupt World"</p>
-        <button class="btn" onclick="playSermon()">Play Sermon</button>
-    </div>
-</section>
+        {members.map((m, i) => (
+          <div key={i} className="flex justify-between mb-2">
+            <span>{m.name}</span>
+            {!m.approved && (
+              <Button size="sm" onClick={() => approveMember(i)}>
+                Approve
+              </Button>
+            )}
+          </div>
+        ))}
+      </CardContent>
+    </Card>
 
-<section class="section" id="bible">
-    <h2>Read the Bible</h2>
-    <div class="card">
-        <p>Access the full King James Version Bible online.</p>
-        <button class="btn" onclick="openBible()">Open Bible</button>
-    </div>
-</section>
+    {/* STATS PANEL */}
+    <Card className="bg-gray-900 rounded-2xl shadow-lg">
+      <CardContent className="p-4">
+        <h2 className="text-xl font-semibold mb-3">📊 Overview</h2>
+        <p>Total Sermons: {sermons.length}</p>
+        <p>Total Leaders: {leaders.length}</p>
+        <p>Total Members: {members.length}</p>
+      </CardContent>
+    </Card>
 
-<section class="section" id="join">
-    <h2>Join AGUGCAI</h2>
-    <div class="card">
-        <input type="text" placeholder="Your Name">
-        <input type="email" placeholder="Your Email">
-        <br>
-        <button class="btn" onclick="join()">Join Now</button>
-    </div>
-</section>
+  </div>
+</div>
 
-<footer>
-    <p>Founder: Pastor Odell Frederick</p>
-    <p>© 2026 AGUGCAI</p>
-</footer>
-
-<script>
-function openBible() {
-    window.open("https://www.kingjamesbibleonline.org/", "_blank");
-}
-
-function playSermon() {
-    alert("Sermon feature coming soon!");
-}
-
-function join() {
-    alert("You have joined AGUGCAI!");
-}
-
-function scrollToJoin() {
-    document.getElementById("join").scrollIntoView({behavior: "smooth"});
-}
-</script>
-
-</body>
-  </html>
+); }
