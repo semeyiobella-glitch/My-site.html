@@ -145,7 +145,7 @@
     <div class="card">
         <p>"The Power of Discipline in a Corrupt World"</p>
         <a href="https://www.youtube.com/results?search_query=discipline+sermon+christian" target="_blank">
-        <button class="btn">Watch Sermon</button>
+            <button class="btn">Watch Sermon</button>
         </a>
     </div>
 </section>
@@ -189,10 +189,11 @@
     </div>
 </section>
 
-<!-- ✅ UPDATED JOIN SECTION -->
+<!-- ✅ FIXED JOIN FORM -->
 <section class="section" id="join">
     <h2>Join AGUGCAI</h2>
     <div class="card">
+
         <form id="signupForm">
             <input type="text" id="name" placeholder="Your Name" required>
             <input type="email" id="email" placeholder="Your Email" required>
@@ -201,6 +202,7 @@
         </form>
 
         <p id="message" style="color: lightgreen;"></p>
+
     </div>
 </section>
 
@@ -214,36 +216,38 @@ function openBible() {
     window.open("https://www.kingjamesbibleonline.org/", "_blank");
 }
 
-function playSermon() {
-    alert("Sermon feature coming soon!");
-}
-
 function scrollToJoin() {
     document.getElementById("join").scrollIntoView({behavior: "smooth"});
 }
 
-/* ✅ NEW FORM SYSTEM */
-document.getElementById("signupForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+/* ✅ SAFE FORM SYSTEM */
+window.onload = function () {
+    const form = document.getElementById("signupForm");
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+    if (form) {
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
 
-    users.push({
-        name: name,
-        email: email,
-        status: "pending"
-    });
+            let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    localStorage.setItem("users", JSON.stringify(users));
+            users.push({
+                name: name,
+                email: email,
+                status: "pending"
+            });
 
-    document.getElementById("message").innerText =
-        "Request submitted! Await approval.";
+            localStorage.setItem("users", JSON.stringify(users));
 
-    document.getElementById("signupForm").reset();
-});
+            document.getElementById("message").innerText =
+                "Request submitted! Await approval.";
+
+            form.reset();
+        });
+    }
+};
 </script>
 
 </body>
