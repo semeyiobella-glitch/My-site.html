@@ -145,7 +145,7 @@
     <div class="card">
         <p>"The Power of Discipline in a Corrupt World"</p>
         <a href="https://www.youtube.com/results?search_query=discipline+sermon+christian" target="_blank">
-    <button class="btn">Watch Sermon</button>
+        <button class="btn">Watch Sermon</button>
         </a>
     </div>
 </section>
@@ -158,12 +158,10 @@
     </div>
 </section>
 
-<!-- 👥 LEADERS SECTION -->
 <section class="section" id="leaders">
     <h2>Our Leaders</h2>
 
     <div class="cards">
-
         <div class="card">
             <h3>Apostle Ivan Obella</h3>
             <p>General Manager & Co-Founder</p>
@@ -188,17 +186,21 @@
             <h3>Brother Pros Joel</h3>
             <p>Regional General Coordinator</p>
         </div>
-
     </div>
 </section>
 
+<!-- ✅ UPDATED JOIN SECTION -->
 <section class="section" id="join">
     <h2>Join AGUGCAI</h2>
     <div class="card">
-        <input type="text" placeholder="Your Name">
-        <input type="email" placeholder="Your Email">
-        <br>
-        <button class="btn" onclick="join()">Join Now</button>
+        <form id="signupForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <br>
+            <button type="submit" class="btn">Join Now</button>
+        </form>
+
+        <p id="message" style="color: lightgreen;"></p>
     </div>
 </section>
 
@@ -216,14 +218,33 @@ function playSermon() {
     alert("Sermon feature coming soon!");
 }
 
-function join() {
-    alert("You have joined AGUGCAI!");
-}
-
 function scrollToJoin() {
     document.getElementById("join").scrollIntoView({behavior: "smooth"});
 }
+
+/* ✅ NEW FORM SYSTEM */
+document.getElementById("signupForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    users.push({
+        name: name,
+        email: email,
+        status: "pending"
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    document.getElementById("message").innerText =
+        "Request submitted! Await approval.";
+
+    document.getElementById("signupForm").reset();
+});
 </script>
 
 </body>
-        </html>
+    </html>
